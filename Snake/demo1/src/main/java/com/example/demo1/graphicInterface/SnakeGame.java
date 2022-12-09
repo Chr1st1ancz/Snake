@@ -14,6 +14,7 @@ public class SnakeGame extends Scene {
     public static final int BOARD_HEIGHT = 500;
     public static final int BOARD_DIFFERENCE_WIDTH = 10;
     public static final int BOARD_DIFFERENCE_HEIGHT = BOARD_HEIGHT / 2;
+    public static final int GAME_SPEED = 1_500;
 
     private final SceneManager sceneManager;
     private final Board board;
@@ -23,35 +24,16 @@ public class SnakeGame extends Scene {
         super(sceneManager.getParentScene());
         this.sceneManager = sceneManager;
         this.board = new Board(sceneManager);
-        this.snake = new Snake(sceneManager);
+        this.snake = new Snake(board, sceneManager);
     }
 
     public void startGame() {
         board.init();
-        Rectangle rectangle = new Rectangle();
-        rectangle.setX(0);
-        rectangle.setWidth(100);
-        rectangle.setHeight(100);
-        rectangle.setFill(Paint.valueOf("red"));
-        sceneManager.addBefore(board.getTextBoard(), rectangle);
+        snake.initSnake();
+        new Thread(this::moveBegin).start();
+    }
 
-
-       // super.setOnKeyPressed();
-
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    rectangle.setX(rectangle.getX() + 1);
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        }).start();
+    private void moveBegin() {
+        
     }
 }

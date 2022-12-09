@@ -10,8 +10,6 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         SnakeGame snakeGame = new SnakeGame(new SimpleViewManager());
         snakeGame.startGame();
-        Snake snake = new Snake(new SimpleViewManager());
-        snake.initSnake();
 
         stage.setScene(snakeGame);
         stage.setResizable(false);
