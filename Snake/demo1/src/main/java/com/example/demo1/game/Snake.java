@@ -28,7 +28,7 @@ public class Snake {
     }
 
     private void snakeBody(){
-        for (int i = 0; i<4; i++) {
+        for (int i = 0; i<2; i++) {
             Rectangle rectangle = new Rectangle();
             rectangle.setX(100 + i * 50);
             rectangle.setY(100);
@@ -42,4 +42,5 @@ public class Snake {
 
     }
 
-}
+    }
+
