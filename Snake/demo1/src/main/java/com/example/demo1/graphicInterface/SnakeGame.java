@@ -1,9 +1,12 @@
 package com.example.demo1.graphicInterface;
 
 import com.example.demo1.game.Board;
+import com.example.demo1.game.Direction;
 import com.example.demo1.game.Snake;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
@@ -21,59 +24,10 @@ public class SnakeGame extends Scene {
     private final SceneManager sceneManager;
     private final Board board;
     private final Snake snake;
-    private boolean left = false;
-    private boolean right = true;
-    private boolean up= false;
-    private boolean down = false;
     private boolean running = true;
 
 
-    private KeyListener keyListener = new KeyListener() {
 
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            int key = e.getKeyCode();
-           if(key == KeyEvent.VK_LEFT){
-               left = true;
-               right = false;
-               up = false;
-               down = false;
-           }
-            if(key == KeyEvent.VK_RIGHT){
-                left = false;
-                right = true;
-                up = false;
-                down = false;
-
-            }
-            if(key == KeyEvent.VK_UP){
-                left = false;
-                right = false;
-                up = true;
-                down = false;
-
-            }
-            if(key == KeyEvent.VK_DOWN){
-                left = false;
-                right = false;
-                up = false;
-                down = true;
-
-            }
-
-
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
-    };
 
 
 
@@ -87,29 +41,36 @@ public class SnakeGame extends Scene {
     public void startGame() {
         board.init();
         snake.initSnake();
+        setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() {
+            @Override
+            public void handle(javafx.scene.input.KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.DOWN) {
+                    snake.setDirection(Direction.BOTTOM);
+                }
+                if (keyEvent.getCode() == KeyCode.UP) {
+                    snake.setDirection(Direction.TOP);
+                }
+                if (keyEvent.getCode() == KeyCode.LEFT) {
+                    snake.setDirection(Direction.LEFT);
+                }
+                if (keyEvent.getCode() == KeyCode.RIGHT) {
+                    snake.setDirection(Direction.RIGHT);
+                }
+            }
+        });
+
         new Thread(this::moveBegin).start();
     }
 
     private void moveBegin() {
-
-
-        if (left) {
-
+        while (true) {
+            try {
+                this.snake.onNextMove();
+                Thread.sleep(200);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
-        if (right) {
-
-        }
-
-        if (up) {
-
-        }
-
-        if (down) {
-
-        }
-
-
 
     }
 }
