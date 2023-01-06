@@ -2,6 +2,7 @@ package com.example.demo1.game;
 
 
 import com.example.demo1.graphicInterface.SceneManager;
+import javafx.application.Platform;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Paint;
@@ -16,12 +17,13 @@ public class Snake {
     private Board board;
     private Apple apple;
     private Direction direction;
+    private int count = 3;
     private List<Rectangle> snakeBody = new LinkedList<>();
 
 
-    public Snake(Board board, SceneManager sceneManager) {
+    public Snake(Board board, Apple apple, SceneManager sceneManager) {
         this.board = board;
-        this.apple = new Apple(sceneManager, board);
+        this.apple = apple;
         this.direction = Direction.RIGHT;
         this.scenemanager = sceneManager;
     }
@@ -37,10 +39,10 @@ public class Snake {
     private void snakeBody(){
         for (int i = 0; i<4; i++) {
             Rectangle rectangle = new Rectangle();
-            rectangle.setX(150 + i * -50);
+            rectangle.setX(125 + i * -25);
             rectangle.setY(100);
-            rectangle.setWidth(50);
-            rectangle.setHeight(50);
+            rectangle.setWidth(25);
+            rectangle.setHeight(25);
             rectangle.setFill(Paint.valueOf("grey"));
             snakeBody.add(rectangle);
             this.scenemanager.addBefore(board.getTextBoard(), rectangle);
@@ -50,10 +52,12 @@ public class Snake {
 
     public void onNextMove() {
         System.out.println(this.direction);
+        if(snakeBody.isEmpty())
+            return;
         if(this.direction == Direction.RIGHT) {
             Rectangle tail = snakeBody.get(snakeBody.size() - 1);
             Rectangle head = snakeBody.get(0);
-            tail.setX(head.getX() + 50);
+            tail.setX(head.getX() + 25);
             tail.setY(head.getY());
             snakeBody.remove(tail);
             snakeBody.add(0, tail);
@@ -61,7 +65,7 @@ public class Snake {
         if(this.direction == Direction.LEFT) {
             Rectangle tail = snakeBody.get(snakeBody.size() - 1);
             Rectangle head = snakeBody.get(0);
-            tail.setX(head.getX() - 50);
+            tail.setX(head.getX() - 25);
             tail.setY(head.getY());
             snakeBody.remove(tail);
             snakeBody.add(0, tail);
@@ -70,7 +74,7 @@ public class Snake {
             Rectangle tail = snakeBody.get(snakeBody.size() - 1);
             Rectangle head = snakeBody.get(0);
             tail.setX(head.getX());
-            tail.setY(head.getY() - 50);
+            tail.setY(head.getY() - 25);
             snakeBody.remove(tail);
             snakeBody.add(0, tail);
         }
@@ -78,7 +82,7 @@ public class Snake {
             Rectangle tail = snakeBody.get(snakeBody.size() - 1);
             Rectangle head = snakeBody.get(0);
             tail.setX(head.getX());
-            tail.setY(head.getY() + 50);
+            tail.setY(head.getY() + 25);
             snakeBody.remove(tail);
             snakeBody.add(0, tail);
         }
@@ -87,7 +91,10 @@ public class Snake {
     }
 
     public void checkCollision(){
+        if(snakeBody.isEmpty())
+            return;
         Rectangle head = snakeBody.get(0);
+        Rectangle tail2 = snakeBody.get(snakeBody.size() -1);
         Rectangle2D head2d = new Rectangle2D(head.getX(), head.getY(), head.getWidth(), head.getHeight());
         if(head.getX() <= board.getPlayingBoard().getX() || head.getY() <= board.getPlayingBoard().getY()){
             System.exit(0);
@@ -105,14 +112,23 @@ public class Snake {
 
         }
 
-        if(apple == null || apple.circle == null)
-            return;
+        int circle_Y = (int) apple.getCircle().getCenterY();
+        int circle_X = (int) apple.getCircle().getCenterX();
+        int circle_radius = (int) apple.getCircle().getRadius();
+        if(head.intersects(circle_X,circle_Y,circle_radius, circle_radius)){
+            apple.takeApple();
+            Rectangle rectangle = new Rectangle();
+            rectangle.setX(tail2.getX() + count * -25);
+            count++;
+            rectangle.setY(tail2.getY() + count * 25);
+            rectangle.setWidth(25);
+            rectangle.setHeight(25);
+            rectangle.setFill(Paint.valueOf("grey"));
+            Platform.runLater(()-> {
+                        snakeBody.add(rectangle);
+                        this.scenemanager.addBefore(board.getTextBoard(), rectangle);
 
-          int circle_Y = (int) apple.circle.getCenterY();
-        int circle_X = (int) apple.circle.getCenterX();
-        int circle_radius = (int) apple.circle.getRadius();
-        if(head.getX() <= circle_X + circle_radius && head.getX() >= circle_X - circle_radius || head.getY() <= circle_Y + circle_radius && head.getY() >= circle_Y - circle_radius){
-            apple.initApple();
+            });
             System.out.println("hhh");
    }
 }

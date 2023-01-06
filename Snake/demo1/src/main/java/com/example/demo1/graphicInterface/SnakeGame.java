@@ -38,13 +38,15 @@ public class SnakeGame extends Scene {
         this.sceneManager = sceneManager;
         this.board = new Board(sceneManager);
         this.apple = new Apple(sceneManager, board);
-        this.snake = new Snake(board, sceneManager);
+        this.snake = new Snake(board, apple, sceneManager);
     }
 
     public void startGame() {
-        board.init();
-        apple.initApple();
-        snake.initSnake();
+        Platform.runLater(()-> {
+            board.init();
+            apple.initApple();
+            snake.initSnake();
+        });
         setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() {
             @Override
             public void handle(javafx.scene.input.KeyEvent keyEvent) {
@@ -71,7 +73,7 @@ public class SnakeGame extends Scene {
             try {
                 this.snake.checkCollision();
                 this.snake.onNextMove();
-                Thread.sleep(200);
+                Thread.sleep(100);
             }catch (Exception e) {
                 e.printStackTrace();
             }

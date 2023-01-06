@@ -10,7 +10,7 @@ import java.awt.geom.RoundRectangle2D;
 public class Apple {
     private SceneManager scenemanager;
     private Board board;
-    public Circle circle;
+    private Circle circle;
 
     public Apple(SceneManager scenemanager, Board board) {
         this.scenemanager = scenemanager;
@@ -24,10 +24,45 @@ public class Apple {
         circle.setCenterX(v);
         circle.setCenterY(b);
         circle.setFill(Paint.valueOf("red"));
-        circle.setRadius(20);
+        circle.setRadius(15);
         this.scenemanager.addBefore(board.getTextBoard(), circle);
 
     }
 
+    public SceneManager getScenemanager() {
+        return scenemanager;
+    }
 
+    public void setScenemanager(SceneManager scenemanager) {
+        this.scenemanager = scenemanager;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public synchronized Circle getCircle() {
+        return circle;
+    }
+
+    public void setCircle(Circle circle) {
+        this.circle = circle;
+    }
+   private int randomWithRange(int min, int max){
+
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
+    }
+
+    public void takeApple() {
+        int calculate = randomWithRange((int) (board.getPlayingBoard().getX() + 50), (int) (board.getPlayingBoard().getWidth() -50));
+        circle.setCenterX(calculate);
+        circle.setCenterY(calculate);
+        circle.setFill(Paint.valueOf("red"));
+        circle.setRadius(15);
+    }
 }
