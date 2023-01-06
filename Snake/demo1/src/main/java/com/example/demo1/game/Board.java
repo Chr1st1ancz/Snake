@@ -28,14 +28,14 @@ public class Board {
         textBoard.setWidth(SnakeGame.BOARD_WIDTH);
         textBoard.setX(0);
         textBoard.setY(SnakeGame.BOARD_HEIGHT);
-        textBoard.setFill(Paint.valueOf("red"));
+        textBoard.setFill(Paint.valueOf("white"));
     }
 
     private void innerInitBoard(){
         playingBoard = new Rectangle();
         playingBoard.setHeight(SnakeGame.BOARD_HEIGHT);
         playingBoard.setWidth(SnakeGame.BOARD_WIDTH);
-        playingBoard.setFill(Paint.valueOf("blue"));
+        playingBoard.setFill(Paint.valueOf("black"));
         playingBoard.setX(0);
         playingBoard.setY(0);
     }

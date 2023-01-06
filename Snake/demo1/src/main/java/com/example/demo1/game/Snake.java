@@ -2,9 +2,13 @@ package com.example.demo1.game;
 
 
 import com.example.demo1.graphicInterface.SceneManager;
+import com.example.demo1.graphicInterface.SnakeGame;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import org.w3c.dom.css.Rect;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -40,7 +44,7 @@ public class Snake {
             rectangle.setY(100);
             rectangle.setWidth(50);
             rectangle.setHeight(50);
-            rectangle.setFill(Paint.valueOf("green"));
+            rectangle.setFill(Paint.valueOf("grey"));
             snakeBody.add(rectangle);
             this.scenemanager.addBefore(board.getTextBoard(), rectangle);
         }
@@ -80,6 +84,28 @@ public class Snake {
             tail.setY(head.getY() + 50);
             snakeBody.remove(tail);
             snakeBody.add(0, tail);
+        }
+
+
+    }
+
+    public void checkCollision(){
+        Rectangle head = snakeBody.get(0);
+        Rectangle2D head2d = new Rectangle2D(head.getX(), head.getY(), head.getWidth(), head.getHeight());
+        if(head.getX() <= board.getPlayingBoard().getX() || head.getY() <= board.getPlayingBoard().getY()){
+            System.exit(0);
+        }
+
+        if(head.getX() >= board.getPlayingBoard().getWidth() || head.getY() == board.getPlayingBoard().getHeight()){
+            System.exit(0);
+        }
+
+        for (int i = 1; i < snakeBody.size(); i++){
+            Rectangle2D tail = new Rectangle2D(snakeBody.get(i).getX(), snakeBody.get(i).getY(), snakeBody.get(i).getWidth(), snakeBody.get(i).getHeight());
+            if(head2d.intersects(tail)) {
+                System.exit(0);
+            }
+
         }
 
 

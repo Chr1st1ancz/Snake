@@ -65,6 +65,7 @@ public class SnakeGame extends Scene {
     private void moveBegin() {
         while (true) {
             try {
+                this.snake.checkCollision();
                 this.snake.onNextMove();
                 Thread.sleep(200);
             }catch (Exception e) {
