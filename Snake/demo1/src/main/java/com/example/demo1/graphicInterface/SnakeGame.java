@@ -1,5 +1,6 @@
 package com.example.demo1.graphicInterface;
 
+import com.example.demo1.game.Apple;
 import com.example.demo1.game.Board;
 import com.example.demo1.game.Direction;
 import com.example.demo1.game.Snake;
@@ -24,6 +25,7 @@ public class SnakeGame extends Scene {
     private final SceneManager sceneManager;
     private final Board board;
     private final Snake snake;
+    private final Apple apple;
     private boolean running = true;
 
 
@@ -35,11 +37,13 @@ public class SnakeGame extends Scene {
         super(sceneManager.getParentScene());
         this.sceneManager = sceneManager;
         this.board = new Board(sceneManager);
+        this.apple = new Apple(sceneManager, board);
         this.snake = new Snake(board, sceneManager);
     }
 
     public void startGame() {
         board.init();
+        apple.initApple();
         snake.initSnake();
         setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() {
             @Override

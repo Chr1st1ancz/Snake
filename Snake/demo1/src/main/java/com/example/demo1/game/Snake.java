@@ -2,15 +2,10 @@ package com.example.demo1.game;
 
 
 import com.example.demo1.graphicInterface.SceneManager;
-import com.example.demo1.graphicInterface.SnakeGame;
+import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import org.w3c.dom.css.Rect;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,12 +14,14 @@ public class Snake {
 
     private final SceneManager scenemanager;
     private Board board;
+    private Apple apple;
     private Direction direction;
     private List<Rectangle> snakeBody = new LinkedList<>();
 
 
     public Snake(Board board, SceneManager sceneManager) {
         this.board = board;
+        this.apple = new Apple(sceneManager, board);
         this.direction = Direction.RIGHT;
         this.scenemanager = sceneManager;
     }
@@ -108,7 +105,16 @@ public class Snake {
 
         }
 
+        if(apple == null || apple.circle == null)
+            return;
 
-    }
+          int circle_Y = (int) apple.circle.getCenterY();
+        int circle_X = (int) apple.circle.getCenterX();
+        int circle_radius = (int) apple.circle.getRadius();
+        if(head.getX() <= circle_X + circle_radius && head.getX() >= circle_X - circle_radius || head.getY() <= circle_Y + circle_radius && head.getY() >= circle_Y - circle_radius){
+            apple.initApple();
+            System.out.println("hhh");
+   }
+}
 }
 
